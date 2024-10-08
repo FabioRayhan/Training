@@ -26,6 +26,26 @@ pageextension 52000 "PO Card Extension" extends "Purchase Order"
                 end;
             }
         }
+        addafter("P&osting")
+        {
+            action("Print Test")
+            {
+                Image = Percentage;
+                Promoted = true;
+                PromotedOnly = true;
+                PromotedCategory = Process;
+                ApplicationArea = all;
+
+                trigger OnAction()
+                var
+                    POHeader: Record "Purchase Header";
+                begin
+                    CurrPage.SetSelectionFilter(POHeader);
+                    Report.Run(Report::"Purchase Order Custom1", true, true, POHeader);
+                end;
+            }
+        }
+
     }
 
     var
