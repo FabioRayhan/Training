@@ -11,7 +11,6 @@ report 52005 "Posted Sales Invoices Report"
         dataitem("Sales Invoice Header"; "Sales Invoice Header")
         {
             column(companyImg; companyInfomation.Picture) { }
-            //column()
             column(Invoice_No; "No.") { }
             column(Document_Date; "Document Date") { }
             column(Customer_Name; "Sell-to Customer Name") { }
@@ -25,8 +24,8 @@ report 52005 "Posted Sales Invoices Report"
             column(getCompanyCountry; getCompanyCountry(companyInfomation."Country/Region Code")) { }
             column(getCompanyPhone; getCompanyPhone(companyInfomation."Phone No.")) { }
             column(getCompanyEmail; getCompanyEmail(companyInfomation."E-Mail")) { }
-            column(getEmployeeName; getEmployeeName("Sales Invoice Header"."No.")) { }
-            column(getEmployeeTitle; getEmployeeTitle("Sales Invoice Header"."No.")) { }
+            column(getEmployeeName; getEmployeeName(employeeInformation."First Name")) { }
+            column(getEmployeeTitle; getEmployeeTitle(employeeInformation."Job Title")) { }
         }
     }
 
@@ -116,38 +115,26 @@ report 52005 "Posted Sales Invoices Report"
 
     procedure getEmployeeName(employeeNo: Code[20]): Text
     var
-        employeeTable: Record Vendor;
-        employeeName: Record Employee;
+        employeeTable: Record Employee;
+        employeeName: Text[30];
     begin
-        employeeNameProcedure := '';
         employeeTable.Reset();
-        employeeTable.SetRange("No.", employeeNo);
-        if employeeTable.FindFirst() then begin
-            employeeName.Reset();
-            employeeName.SetRange("No.", employeeTable."No.");
-            if employeeName.FindFirst() then begin
-                employeeNameProcedure := employeeName."First Name";
-            end;
-        end;
-        exit(employeeNameProcedure);
+        employeeTable.SetRange("First Name", employeeNo);
+        if employeeTable.FindFirst() then
+            employeeName := employeeTable."First Name";
+        exit(employeeName);
     end;
 
     procedure getEmployeeTitle(employeeNo: Code[20]): Text
     var
-        employeeTable: Record Vendor;
-        employeeTitle: Record Employee;
+        employeeTable: Record Employee;
+        employeeTitle: Text[30];
     begin
-        employeeTitleProcedure := '';
         employeeTable.Reset();
-        employeeTable.SetRange("No.", employeeNo);
-        if employeeTable.FindFirst() then begin
-            employeeTitle.Reset();
-            employeeTitle.SetRange("No.", employeeTable."No.");
-            if employeeTitle.FindFirst() then begin
-                employeeNameProcedure := employeeTitle."Job Title";
-            end;
-        end;
-        exit(employeeNameProcedure);
+        employeeTable.SetRange("Job Title", employeeNo);
+        if employeeTable.FindFirst() then
+            employeeTitle := employeeTable."Job Title";
+        exit(employeeTitle);
     end;
 
     trigger OnInitReport()
@@ -200,13 +187,5 @@ report 52005 "Posted Sales Invoices Report"
 
     var
         companyInfomation: Record "Company Information";
-        companyAddress: Text[100];
-        companyAddress2: Text[50];
-        companyPostCode: Code[20];
-        companyCity: Text[30];
-        companyCountry: Code[10];
-        companyPhone: Text[30];
-        companyEmail: Text[80];
-        employeeNameProcedure: Text[100];
-        employeeTitleProcedure: Text[100];
+        employeeInformation: Record Employee;
 }
