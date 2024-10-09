@@ -144,7 +144,6 @@ report 52000 "Purchase Order Custom1"
         salesPersonPurchaser: Record "Salesperson/Purchaser";
     begin
         purchaserNameProcedure := '';
-
         vendorTable.Reset();
         vendorTable.SetRange("No.", vendorNo);
         if vendorTable.FindFirst() then begin

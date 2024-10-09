@@ -81,6 +81,11 @@ table 52005 "Purchase Requisition Line"
             OptionMembers = "Confirmed","Not Confirmed";
             DataClassification = ToBeClassified;
         }
+        field(15; "Item No."; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Item."No.";
+        }
     }
 
     keys

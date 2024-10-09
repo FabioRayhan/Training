@@ -120,6 +120,28 @@ page 52005 "Purchase Requisition"
                     Rec.Modify(true);
                 end;
             }
+
+            action(Draft)
+            {
+                Caption = 'Draft';
+                ToolTip = 'This requisition still a draft';
+                trigger OnAction()
+                begin
+                    Rec."Status Document" := Rec."Status Document"::Draft;
+                    Rec.Modify(true);
+                end;
+            }
+            action(Print)
+            {
+                Image = Print;
+                Caption = 'Print';
+                ToolTip = 'Print the requisition document';
+                ApplicationArea = All;
+                trigger OnAction()
+                begin
+                    Report.Run(52004, true, false, Rec);
+                end;
+            }
         }
     }
 

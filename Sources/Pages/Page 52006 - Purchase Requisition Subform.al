@@ -18,9 +18,14 @@ page 52006 "Purchase Requisition Subform"
                 {
                     ApplicationArea = All;
                 }
+                field("Item No."; Rec."Item No.")
+                {
+                    ApplicationArea = all;
+                }
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(Description; Rec.Description)
                 {

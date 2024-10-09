@@ -25,6 +25,7 @@ report 52004 "Purchase Requisition"
             dataitem("Purchase Requisition Line"; "Purchase Requisition Line")
             {
                 DataItemLink = "No." = field("Purchase Req. No.");
+                column(Item_No_; "Item No.") { }
                 column(No_; "No.") { }
                 column(Description; Description) { }
                 column(Quantity; Quantity) { }

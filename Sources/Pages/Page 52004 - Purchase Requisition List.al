@@ -52,7 +52,6 @@ page 52004 "Purchase Requisition List"
                 Caption = 'Submit';
                 Image = SendApprovalRequest;
                 ApplicationArea = All;
-
                 trigger OnAction()
                 begin
                     Rec."Status Document" := Rec."Status Document"::Submitted;
@@ -68,6 +67,22 @@ page 52004 "Purchase Requisition List"
                     Rec."Status Document" := Rec."Status Document"::Approved;
                     Rec.Modify();
                 end;
+            }
+            action(Draft)
+            {
+                Caption = 'Draft';
+                Image = Action;
+                trigger OnAction()
+                begin
+                    Rec."Status Document" := Rec."Status Document"::Draft;
+                    Rec.Modify();
+                end;
+            }
+            action(Print)
+            {
+                Caption = 'Print';
+                Image = Print;
+
             }
         }
     }
