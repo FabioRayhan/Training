@@ -1,4 +1,4 @@
-pageextension 52000 "PO Card Extension" extends "Purchase Order"
+pageextension 52005 "PS Invoices Extension" extends "Posted Sales Invoice"
 {
     layout
     {
@@ -7,9 +7,9 @@ pageextension 52000 "PO Card Extension" extends "Purchase Order"
 
     actions
     {
-        addafter("&Print")
+        addbefore("Update Document")
         {
-            action("Print Custom")
+            action("Print Kwitansi")
             {
                 Image = Print;
                 Promoted = true;
@@ -19,29 +19,30 @@ pageextension 52000 "PO Card Extension" extends "Purchase Order"
                 ApplicationArea = All;
                 trigger OnAction()
                 var
-                    POHeader: Record "Purchase Header";
+                    POHeader: Record "Sales Invoice Header";
                 begin
                     CurrPage.SetSelectionFilter(POHeader);
-                    Report.Run(Report::"Purchase Order Custom1", true, true, POHeader);
+                    Report.Run(Report::"Posted Sales Invoices Report", true, true, POHeader);
                 end;
             }
         }
-        addafter("P&osting")
-        {
-            action("Print Test")
-            {
-                Image = Percentage;
-                Promoted = true;
-                PromotedOnly = true;
-                PromotedCategory = Process;
-                ApplicationArea = all;
 
+        addbefore("Update Document")
+        {
+            action("Print Form")
+            {
+                Image = Print;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                //PromotedOnly = true;
+                ApplicationArea = All;
                 trigger OnAction()
                 var
-                    POHeader: Record "Purchase Header";
+                    POHeader: Record "Sales Invoice Header";
                 begin
                     CurrPage.SetSelectionFilter(POHeader);
-                    Report.Run(Report::"Purchase Order Custom1", true, true, POHeader);
+                    Report.Run(Report::"Posted Sales Invoice Form", true, true, POHeader);
                 end;
             }
         }

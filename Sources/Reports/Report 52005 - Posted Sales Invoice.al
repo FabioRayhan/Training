@@ -16,18 +16,72 @@ report 52005 "Posted Sales Invoices Report"
             column(Customer_Name; "Sell-to Customer Name") { }
             column(Customer_Address; "Sell-to Address") { }
             column(Amount; "Amount Including VAT") { }
+            column(AmountInWords; AmountInWords) { }
             column(Currency_Code; "Currency Code") { }
+            column(LCYCode; LCYCode) { }
+            column(getCurrency; getCurrency(GLSetup."LCY Code")) { }
             column(getCompanyAddress; getCompanyAddress(companyInfomation.Address)) { }
             column(getCompanyAddress2; getCompanyAddress2(companyInfomation."Address 2")) { }
             column(getCompanyPostCode; getCompanyPostCode(companyInfomation."Post Code")) { }
-            column(getCompanyCity; getCompanyCity(companyInfomation.City)) { }
+            column(getCompanyCity; companyInfomation.City + ' - ' + getCompanyCountry(companyInfomation."Country/Region Code")) { }
             column(getCompanyCountry; getCompanyCountry(companyInfomation."Country/Region Code")) { }
             column(getCompanyPhone; getCompanyPhone(companyInfomation."Phone No.")) { }
             column(getCompanyEmail; getCompanyEmail(companyInfomation."E-Mail")) { }
             column(getEmployeeName; getEmployeeName(employeeInformation."First Name")) { }
             column(getEmployeeTitle; getEmployeeTitle(employeeInformation."Job Title")) { }
+
+            trigger OnAfterGetRecord()
+            var
+            begin
+                AmountInWords := '';
+                "Sales Invoice Header".CalcFields("Amount Including VAT");
+                sayingEnglish.FormatNoText(NoText, "Sales Invoice Header"."Amount Including VAT", '');
+                AmountInWords := NoText[1];
+            end;
+
+            trigger OnPreDataItem()
+            var
+            begin
+                if GLSetup.Get() then
+                    LCYCode := GLSetup."LCY Code";
+            end;
         }
     }
+
+    requestpage
+    {
+        AboutTitle = 'Posted Sales Invoice';
+        AboutText = 'Choose the date';
+        layout
+        {
+            area(Content)
+            {
+                group(Filter)
+                {
+                    field(startingDate; startingDate)
+                    {
+                        ApplicationArea = all;
+                    }
+                    field(endingDate; endingDate)
+                    {
+                        ApplicationArea = all;
+                    }
+                }
+            }
+        }
+    }
+
+    procedure getCurrency(lcyCode: Code[10]): Text
+    var
+        ledgerTable: Record "General Ledger Setup";
+        currencyCode: Text[100];
+    begin
+        ledgerTable.Reset();
+        ledgerTable.SetRange("LCY Code", lcyCode);
+        if ledgerTable.FindFirst() then
+            currencyCode := ledgerTable."LCY Code";
+        exit(currencyCode);
+    end;
 
     procedure getCompanyAddress(companyName: Text[100]): Text
     var
@@ -37,7 +91,7 @@ report 52005 "Posted Sales Invoices Report"
         companyTable.Reset();
         companyTable.SetRange(Address, companyName);
         if companyTable.FindFirst() then
-            companyAddress := companyTable."Address";
+            companyAddress := companyTable.Address;
         exit(companyAddress);
     end;
 
@@ -143,26 +197,6 @@ report 52005 "Posted Sales Invoices Report"
         companyInfomation.CalcFields(Picture);
     end;
 
-
-    // requestpage
-    // {
-    //     AboutTitle = 'Teaching tip title';
-    //     AboutText = 'Teaching tip content';
-    //     layout
-    //     {
-    //         area(Content)
-    //         {
-    //             group(GroupName)
-    //             {
-    //                 field(Name; SourceExpression)
-    //                 {
-    //                     ApplicationArea = All;
-
-    //                 }
-    //             }
-    //         }
-    //     }
-
     // actions
     // {
     //     area(processing)
@@ -188,4 +222,11 @@ report 52005 "Posted Sales Invoices Report"
     var
         companyInfomation: Record "Company Information";
         employeeInformation: Record Employee;
+        GLSetup: Record "General Ledger Setup";
+        LCYCode: Code[10];
+        AmountInWords: Text;
+        NoText: array[2] of Text;
+        sayingEnglish: Codeunit "Saying English";
+        startingDate: Date;
+        endingDate: Date;
 }
