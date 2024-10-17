@@ -35,41 +35,40 @@ report 52005 "Posted Sales Invoices Report"
             begin
                 AmountInWords := '';
                 "Sales Invoice Header".CalcFields("Amount Including VAT");
-                sayingEnglish.FormatNoText(NoText, "Sales Invoice Header"."Amount Including VAT", '');
+                sayingEnglish.FormatNoText(NoText, "Sales Invoice Header"."Amount Including VAT", "Currency Code");
                 AmountInWords := NoText[1];
-            end;
 
-            trigger OnPreDataItem()
-            var
-            begin
-                if GLSetup.Get() then
+                if GLSetup.Get() then begin
                     LCYCode := GLSetup."LCY Code";
+                    if "Currency Code" = '' then
+                        "Currency Code" := LCYCode;
+                end;
             end;
         }
     }
 
-    requestpage
-    {
-        AboutTitle = 'Posted Sales Invoice';
-        AboutText = 'Choose the date';
-        layout
-        {
-            area(Content)
-            {
-                group(Filter)
-                {
-                    field(startingDate; startingDate)
-                    {
-                        ApplicationArea = all;
-                    }
-                    field(endingDate; endingDate)
-                    {
-                        ApplicationArea = all;
-                    }
-                }
-            }
-        }
-    }
+    // requestpage
+    // {
+    //     AboutTitle = 'Posted Sales Invoice';
+    //     AboutText = 'Choose the date';
+    //     layout
+    //     {
+    //         area(Content)
+    //         {
+    //             group(Filter)
+    //             {
+    //                 field(startingDate; startingDate)
+    //                 {
+    //                     ApplicationArea = all;
+    //                 }
+    //                 field(endingDate; endingDate)
+    //                 {
+    //                     ApplicationArea = all;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     procedure getCurrency(lcyCode: Code[10]): Text
     var

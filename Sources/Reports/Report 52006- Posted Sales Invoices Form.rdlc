@@ -18,28 +18,28 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.71483cm</Width>
+                  <Width>1.8383cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.70239cm</Width>
+                  <Width>1.82586cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.39498cm</Width>
+                  <Width>4.14803cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.06634cm</Width>
+                  <Width>1.18981cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.36988cm</Width>
+                  <Width>1.26405cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.90988cm</Width>
+                  <Width>3.6453cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.93433cm</Width>
+                  <Width>2.0578cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.12154cm</Width>
+                  <Width>4.24501cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -710,21 +710,23 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox19">
+                        <Textbox Name="Unit_of_Measure_Code1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!Unit_of_Measure_Code.Value</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox19</rd:DefaultName>
+                          <rd:DefaultName>Unit_of_Measure_Code1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -777,7 +779,19 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Total IDR </Value>
+                                  <Value>Total </Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>=Fields!Currency_Code.Value</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -867,7 +881,7 @@
             <Top>0.32314cm</Top>
             <Left>0cm</Left>
             <Height>1.8cm</Height>
-            <Width>20.21417cm</Width>
+            <Width>20.21416cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1879,6 +1893,9 @@ End Function
         </Field>
         <Field Name="Due_Date">
           <DataField>Due_Date</DataField>
+        </Field>
+        <Field Name="Currency_Code">
+          <DataField>Currency_Code</DataField>
         </Field>
         <Field Name="Payment_Terms_Code">
           <DataField>Payment_Terms_Code</DataField>

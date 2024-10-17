@@ -14,6 +14,7 @@ report 52006 "Posted Sales Invoice Form"
             column(Invoice_No; "No.") { }
             column(Document_Date; "Document Date") { }
             column(Due_Date; "Due Date") { }
+            column(Currency_Code; "Currency Code") { }
             column(Payment_Terms_Code; "Payment Terms Code") { }
             column(Customer_Name; "Sell-to Customer Name") { }
             column(Customer_Address; "Sell-to Address") { }
@@ -47,6 +48,7 @@ report 52006 "Posted Sales Invoice Form"
                 column(runningNoText; runningNoText) { }
 
                 trigger OnAfterGetRecord()
+                var
                 begin
                     if "Sales Invoice Line".Type <> "Sales Invoice Line".Type::" " then begin
                         runningNo += 1;
@@ -57,6 +59,16 @@ report 52006 "Posted Sales Invoice Form"
                 end;
             }
 
+            trigger OnAfterGetRecord()
+            var
+            begin
+                if GLSetup.Get() then begin
+                    LCYCode := GLSetup."LCY Code";
+                    if "Currency Code" = '' then
+                        "Currency Code" := LCYCode;
+                end;
+            end;
+
             trigger OnPreDataItem()
             var
             begin
@@ -66,28 +78,28 @@ report 52006 "Posted Sales Invoice Form"
         }
     }
 
-    requestpage
-    {
-        AboutTitle = 'Posted Sales Invoice Form';
-        AboutText = 'Choose the date';
-        layout
-        {
-            area(Content)
-            {
-                group(Filter)
-                {
-                    field(startingDate; startingDate)
-                    {
-                        ApplicationArea = all;
-                    }
-                    field(endingDate; endingDate)
-                    {
-                        ApplicationArea = all;
-                    }
-                }
-            }
-        }
-    }
+    // requestpage
+    // {
+    //     AboutTitle = 'Posted Sales Invoice Form';
+    //     AboutText = 'Choose the date';
+    //     layout
+    //     {
+    //         area(Content)
+    //         {
+    //             group(Filter)
+    //             {
+    //                 field(startingDate; startingDate)
+    //                 {
+    //                     ApplicationArea = all;
+    //                 }
+    //                 field(endingDate; endingDate)
+    //                 {
+    //                     ApplicationArea = all;
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     trigger OnInitReport()
     begin
@@ -204,7 +216,8 @@ report 52006 "Posted Sales Invoice Form"
 
     var
         companyInformation: Record "Company Information";
-        generalLedger: Record "General Ledger Setup";
+        GLSetup: Record "General Ledger Setup";
+        LCYCode: Code[10];
         startingDate: Date;
         endingDate: Date;
         runningNo: Integer;

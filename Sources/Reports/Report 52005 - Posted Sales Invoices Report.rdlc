@@ -582,10 +582,6 @@
                     <Value>=Fields!AmountInWords.Value</Value>
                     <Style />
                   </TextRun>
-                  <TextRun>
-                    <Value>=Fields!LCYCode.Value</Value>
-                    <Style />
-                  </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
@@ -759,7 +755,7 @@
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>=Fields!LCYCode.Value</Value>
+                    <Value>=Fields!Currency_Code.Value</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
